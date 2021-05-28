@@ -18,6 +18,9 @@ public class ModifyCartRequest {
 	}
 
 	public void setUsername(String username) {
+
+		//Setting a custom comment
+		System.out.println("Testing");
 		this.username = username;
 	}
 

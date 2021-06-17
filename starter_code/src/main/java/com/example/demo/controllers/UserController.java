@@ -19,10 +19,14 @@ import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.CreateUserRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	
+
+	public static final Logger log = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -52,10 +56,12 @@ public class UserController {
 		user.setCart(cart);
 		if(createUserRequest.getPassword()==null || createUserRequest.getPassword().length()<7 ||
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
+			log.info("CUSTOM LOGGING : User creation failed "+user.getUsername());
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		userRepository.save(user);
+		log.info("CUSTOM LOGGING : User created "+user.getUsername() );
 		return ResponseEntity.ok(user);
 	}
 	
